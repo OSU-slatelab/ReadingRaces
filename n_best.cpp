@@ -9,15 +9,11 @@
 
 using namespace boost::python;
 
-//typedef std::vector<std::string> NBestList;
-
 class NBest
 {
     private:
         int n;
         int ptr;
-//        NBestList hyps;
-//        NBestList call_nbest(int);
         std::vector<std::string> hyps;
         std::vector<std::string> call_nbest(int);
     public:
@@ -36,22 +32,17 @@ class NBest
         std::vector<std::string> getList() { return hyps; }
 };
 
-//NBestList NBest::call_nbest(int n)
 std::vector<std::string> NBest::call_nbest(int n)
 {
     ps_decoder_t *ps = NULL;
     cmd_ln_t *config = NULL;
     ps_nbest_t *nbest;
     FILE *fh;
-//    NBestList hyps;
     std::vector<std::string> hyps;
 
     config = cmd_ln_init(NULL, ps_args(), TRUE,
         "-jsgf", "hypotheses.jsgf", 
         "-hmm", MODELDIR "/en-us/en-us",
-        //"-lm", MODELDIR "/en-us/en-us.lm.bin",
-        //"-dict", MODELDIR "/en-us/cmudict-en-us.dict",
-        //"-allphone", MODELDIR "/en-us/en-us-phone.lm.bin",
         "-dict", "phone.dict",
         "-beam", "1e-20",
         "-pbeam", "1e-20",
@@ -101,9 +92,6 @@ std::vector<std::string> NBest::call_nbest(int n)
 
 BOOST_PYTHON_MODULE(n_best)
 {
-//    class_<NBestList>("NBestList")
-//        .def(vector_indexing_suite<NBestList>() );
-
     class_<std::vector<std::string> >("StringVec")
         .def(vector_indexing_suite<std::vector<std::string> >() );
 
