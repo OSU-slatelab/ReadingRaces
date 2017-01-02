@@ -14,11 +14,15 @@ class NBest
     private:
         int n;
         int ptr;
+        std::string audio; // "computer-generated-16k.wav"
+        std::string jsgf; // "hypotheses.jsgf"
         std::vector<std::string> hyps;
         std::vector<std::string> call_nbest(int);
     public:
-        NBest(int num) {
-            n = num; 
+        NBest(int num, std::string audio_path, std::string jsgf_path) {
+            n = num;
+            audio = audio_path;
+            jsgf = jsgf_path;
             ptr = 0;
             hyps = call_nbest(n);
         }
@@ -41,8 +45,11 @@ std::vector<std::string> NBest::call_nbest(int n)
     std::vector<std::string> hyps;
 
     config = cmd_ln_init(NULL, ps_args(), TRUE,
-        "-jsgf", "hypotheses.jsgf", 
+        "-jsgf", jsgf, 
         "-hmm", MODELDIR "/en-us/en-us",
+        //"-lm", MODELDIR "/en-us/en-us.lm.bin",
+        //"-dict", MODELDIR "/en-us/cmudict-en-us.dict",
+        //"-allphone", MODELDIR "/en-us/en-us-phone.lm.bin",
         "-dict", "phone.dict",
         "-beam", "1e-20",
         "-pbeam", "1e-20",
@@ -62,9 +69,9 @@ std::vector<std::string> NBest::call_nbest(int n)
 
     printf("Search type: %s\n", ps_get_search(ps));
 
-    fh = fopen("computer-generated-16k.wav", "rb");
+    fh = fopen(audio, "rb");
     if (fh == NULL) {
-        fprintf(stderr, "Unable to open input file computer-generated-16k.wav\n");
+        fprintf(stderr, "Unable to open input file " + audio + "\n");
         return hyps;
     }
 
@@ -95,7 +102,7 @@ BOOST_PYTHON_MODULE(n_best)
     class_<std::vector<std::string> >("StringVec")
         .def(vector_indexing_suite<std::vector<std::string> >() );
 
-    class_<NBest>("NBest", init<int>())
+    class_<NBest>("NBest", init<int, std::string, std::string>())
         .def("hasNext", &NBest::hasNext)
         .def("next", &NBest::next)
         .def("reset", &NBest::reset)
