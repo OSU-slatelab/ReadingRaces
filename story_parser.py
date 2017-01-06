@@ -16,22 +16,28 @@ class StoryParser(object):
 
     def add_new_word(self, word, pronunciation):
         self.dictionary.insert(word, pronunciation)
+
         # TODO how frequently to rebuild model after new words?
         # Probably too expensive to do each time, but intermittently?
 
     def predict(self, word):
-        n_best = self.gm.predict(word)
         n = 10
-        n_best = self.am.predict(word, audio_path, n, n_best)
-        print(word, n_best)
+        rules = self.gm.predict(word, 10)
+
+        # TODO change this to proper logic
+        audio_path = 'computer-generated-16k.wav'
+
+        n_best = self.am.predict(word, audio_path, n, rules)
+
         # TODO refine this process:
         #    add TTS so user can hear pronunciations
         #    allow user to select best to add
+
         return n_best[0]
 
     def process(self, word):
         if self.is_new_vocabulary(word):
-            print(word)
+            print 'New word found: ', word
             pronunciation = self.predict(word)
             self.add_new_word(word, pronunciation)
 
@@ -41,6 +47,9 @@ class StoryParser(object):
             self.process(word)
         if self.save:
             self.dictionary.save()
+
+        # TODO build class for user I/O
         #display = CommandLineDisplay()
         #display.show(results)
+
         return 0
