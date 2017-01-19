@@ -8,5 +8,6 @@ Usage:
 
 python addStory.py [--dict dictionary_file] story_file
 
-story_file  Plaintext file containing the story to be parsed for new vocabularly
+story_file  Plaintext file containing the story to be parsed for new vocabulary
+
 dictionary_file Phonetic dictionary to use. Default is the included dictionary, dictionary.txt, which is derived from cmudict-0.7b
