@@ -19,7 +19,7 @@ class GraphemeModel(object):
         rules = []
 
         for line in iter(p.stdout.readline, ''):
-            if re.match('^COMPUTER-GENERATED', line):
+            if re.match('^' + word, line):
                 rules.append(re.split("\t", line)[2].strip())
 
         retval = p.wait()

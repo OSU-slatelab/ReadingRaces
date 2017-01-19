@@ -1,6 +1,8 @@
 import tokenizer
 import dictionary
 import models
+import recorder
+import tts
 
 class StoryParser(object):
 
@@ -20,20 +22,28 @@ class StoryParser(object):
         # TODO how frequently to rebuild model after new words?
         # Probably too expensive to do each time, but intermittently?
 
+    def get_audio(self, word):
+        print 'Beginning acoustic prediction'
+        flag = raw_input('If you would like to provide a pre-recorded .wav file, enter the path. If you would like to record the word now, enter \'r\': ')
+        if 'r' = flag:
+            recorder.record_to_file(word + '.wav')
+        else:
+            return flag
+
     def predict(self, word):
         n = 10
         rules = self.gm.predict(word, 10)
 
-        # TODO change this to proper logic
-        audio_path = 'computer-generated-16k.wav'
+        audio_path = self.get_audio(word)
 
         n_best = self.am.predict(word, audio_path, n, rules)
 
-        # TODO refine this process:
-        #    add TTS so user can hear pronunciations
-        #    allow user to select best to add
+        # TODO allow user to select best to add
+        pronunciation = n_best[0]
 
-        return n_best[0]
+        tts.pronounce(word, pronunciation)
+
+        return pronunciation
 
     def process(self, word):
         if self.is_new_vocabulary(word):
