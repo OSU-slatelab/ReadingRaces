@@ -4,10 +4,12 @@ This tool is a standalone enhancement to Reading RACES, an oral reading fluency 
 
 For more details, see the [full project report](http://day279.github.io/MastersReport.pdf).
 
-## Dependencies
+## Dependencies:
 
 Phonetisaurus
+
 PocketSphinx
+
 Festival Speech Synthesis System
 
 
