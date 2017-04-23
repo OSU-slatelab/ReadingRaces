@@ -21,7 +21,8 @@ def build_mispellings(n_best):
     mispellings = []
 
     for line in iter(p.stdout.readline, ''):
-        mispellings.append(re.split('\t', line)[2].strip().replace(' ', ''))
+        print(line)
+        mispellings.append(re.split('\t', line)[0].strip().replace(' ', ''))
 
     retval = p.wait()
     if 0 != retval:

@@ -3,7 +3,7 @@ import subprocess
 import shlex
 import re
 
-nsw_path = '~/Documents/nsw/bin/nsw_expand'
+nsw_path = '/home/meghan/Documents/nsw/bin/nsw_expand'
 domain = 'nantc'
 
 def get_output_file(input_file):
@@ -13,6 +13,7 @@ def get_output_file(input_file):
 
 def normalize(input_file):
     output_file = get_output_file(input_file)
+    #options = ' '.join([nsw_path, '-domain', domain, input_file, '-output', output_file])
     options = ' '.join([nsw_path, '-domain', domain, input_file, '-output', output_file])
     print options
     p = subprocess.Popen(shlex.split(options), stdout=subprocess.PIPE)

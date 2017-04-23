@@ -66,15 +66,15 @@ class PronunciationPredictor(object):
             result.add('grapheme', [Hypothesis(x) for x in grapheme_n_best[0:self.output_n]])
             #print 'Grapheme'
 
-            #acoustic_results = self.am.predict(audio_file, self.n)[0:self.output_n]
-            #result.add('acoustic', [Hypothesis(x) for x in acoustic_results])
+            acoustic_results = self.am.predict(audio_file, self.n)[0:self.output_n]
+            result.add('acoustic', [Hypothesis(x) for x in acoustic_results])
             #print 'Acoustic'
 
-            #n_best = self.am.predict(audio_file, self.n, word, grapheme_n_best)
+            n_best = self.am.predict(audio_file, self.n, word, grapheme_n_best)
             #result.add('full', [Hypothesis(x) for x in n_best[0:self.output_n]])
 
-            #full_r = self.interpolate(grapheme_n_best, n_best, self.gamma)
-            #result.add('full', [Hypothesis(x) for x in full_r[0:self.output_n]])
+            full_r = self.interpolate(grapheme_n_best, n_best, self.gamma)
+            result.add('full', [Hypothesis(x) for x in full_r[0:self.output_n]])
             #print 'Full'
 
         return result

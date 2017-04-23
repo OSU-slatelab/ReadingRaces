@@ -37,7 +37,7 @@ class StoryParser(object):
 
     def predict(self, word):
         audio_path = self.get_audio(word)
-        n_best = self.predictor.predict(word, audio_path).get('full')
+        n_best = [h.getValue() for h in self.predictor.predict(word, audio_path).get('full')]
 
         creative_mispellings = build_creative_mispellings(n_best)
 
